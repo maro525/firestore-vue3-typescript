@@ -3,7 +3,7 @@ import 'firebase/firestore';
 
 import { firebaseConfigType } from '@/plugins/config-type'
 
-export let firestore: any = null 
+export let firestore: Firebase.firestore.Firestore | null = null 
 
 export function initializeFirebase(options: firebaseConfigType): void {
   if (Firebase.apps.length > 0) {
@@ -15,7 +15,7 @@ export function initializeFirebase(options: firebaseConfigType): void {
   Firebase
     .firestore()
     .enablePersistence()
-    .catch((err: any) => {
+    .catch((err) => {
       if (err.code === 'failed-precondition'){
         throw new Error(
           'multiple tabs open, persistence can only be enabled in one tab at a time.'

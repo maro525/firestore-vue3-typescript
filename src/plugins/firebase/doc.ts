@@ -12,17 +12,15 @@ interface DocState {
   exists: boolean;
   saving: boolean;
   id: string | null;
-  doc: any[];
+  doc: Doc[];
 }
 
-export function useDoc(key: symbol): any {
-  const result = inject(key)
-
-  if (!result) {
-    throw new Error("No doc provider")
-  }
-
-  return result
+type InjectedType = {
+  loading: boolean;
+  exists: boolean;
+  saving: boolean;
+  id: string | null;
+  doc: Doc[];
 }
 
 
@@ -36,11 +34,11 @@ export function provideDoc<T>(name: string, key: symbol) {
     doc: []
   })
 
-  const collection = firestore.collection(name)
+  const collection = firestore?.collection(name)
 
   function sync(): void {
     state.loading = true;
-    collection.onSnapshot((snapshot: Firebase.firestore.QuerySnapshot) => {
+    collection?.onSnapshot((snapshot: Firebase.firestore.QuerySnapshot) => {
 
       const document: Array<Doc> = snapshot.docs.map((v: Firebase.firestore.QueryDocumentSnapshot) => {
         return {data: v.data(), id: v.id}
@@ -52,9 +50,9 @@ export function provideDoc<T>(name: string, key: symbol) {
     })
   }
 
-  async function create(item: T): Promise<any> {
+  async function create(item: T): Promise<void> {
     state.saving = true
-    const PromiseObj = await collection.doc().set(item)
+    const PromiseObj = await collection?.doc().set(item)
     state.saving = false
     return PromiseObj
   }
@@ -66,4 +64,14 @@ export function provideDoc<T>(name: string, key: symbol) {
     sync,
     create
   })
+}
+
+export function useDoc(key: symbol): any{
+  const result = inject(key)
+
+  if (!result) {
+    throw new Error("No doc provider")
+  }
+
+  return result
 }
