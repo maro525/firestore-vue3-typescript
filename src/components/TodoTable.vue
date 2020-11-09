@@ -11,28 +11,34 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import { useDoc } from '@/plugins/firebase'
+import { useDoc } from '@/plugins/firebase-provider'
 import { Todo, TodoDocKey } from '@/plugins/types';
 
+/*
+provider based
+*/
 export default defineComponent({
   name: 'TodoTable',
   props: {
     msg: String,
   },
   setup() {
-    const { doc, create }= useDoc(TodoDocKey)
+    // const { doc, create }= useDoc(TodoDocKey)
+    const doc: any[] = []
 
     const newItem = ""
 
-    const addItem = (_item: Todo) => {
-      const item = {
-        content: _item,
-        finished: false
-      }
-      create(item)
-        .then(() => console.log("succeeded"))
-        .catch((err: unknown) => console.log(err))
+    const addItem = () => {
+      console.log('add item')
     }
+    // const addItem = (_item: string) => {
+    //   const item = {
+    //     name: _item,
+    //   }
+    //   create(item)
+    //     .then(() => console.log("succeeded"))
+    //     .catch((err: unknown) => console.log(err))
+    // }
 
     return {
       doc,
