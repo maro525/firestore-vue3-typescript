@@ -1,6 +1,5 @@
 import { Firestore } from '@/plugins/firebase'
 import { FirestoreSimple } from '@firestore-simple/web'
-import { QuerySnapshot } from '@firestore-simple/web/dist/types'
 import { reactive, toRefs } from 'vue'
 
 const firestoreSimple = new FirestoreSimple(Firestore)
@@ -12,7 +11,6 @@ export interface Item {
   name: string;
   favorite: boolean;
   description: string | null;
-  itemId: string;
 }
 
 
@@ -48,8 +46,6 @@ export function useStateReactive() {
   TodoDoc.onSnapshot((QuerySnapshot) => {
     state.todos = QuerySnapshot.docs.map(v => v.data() as Todo)
   })
-
-
 
   return {
     ...toRefs(state),

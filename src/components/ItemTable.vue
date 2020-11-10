@@ -1,18 +1,18 @@
 <template>
   <div>
     <ul>
-      <li v-for="item in items" :key="item.id">{{ item.name }}</li>
+      <li v-for="item in items" :key="item.id">{{ item.name }}<button @click="deleteItem(item.id)">delete</button></li>
     </ul>
     <input type="text" v-model="newItem" />
-    <button @click="add(newItem)">add</button>
+    <button @click="addItem(newItem)">add</button>
   </div>
 </template>
 
 
 <script lang="ts">
-import { defineComponent, computed, watchEffect } from 'vue';
+import { defineComponent } from 'vue';
 
-import { Item, useStateReactive } from '@/store'
+import { useStateReactive } from '@/store'
 
 /*
 firestore-simple based
@@ -25,14 +25,22 @@ export default defineComponent({
 
     const newItem = ""
 
-    const check = (itemname: string) => {
-      console.log("add")
+    const addItem = async (itemname: string) => {
+      const newid = await ItemDoc.add({name: itemname, favorite: false, description: ''})
+      console.log(newid)
+    }
+
+    const deleteItem = async (id: string) => {
+      console.log(id)
+      const deleteid = await ItemDoc.delete(id)
+      console.log(deleteid)
     }
 
     return {
       newItem,
       items,
-      check
+      addItem,
+      deleteItem
     }
   }
 });
