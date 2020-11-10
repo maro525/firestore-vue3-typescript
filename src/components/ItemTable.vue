@@ -1,37 +1,38 @@
 <template>
   <div>
-    <p>item list</p>
     <ul>
       <li v-for="item in items" :key="item.id">{{ item.name }}</li>
     </ul>
     <input type="text" v-model="newItem" />
+    <button @click="add(newItem)">add</button>
   </div>
-  <p>footer</p>
 </template>
 
 
 <script lang="ts">
-import { defineComponent, watchEffect } from 'vue';
+import { defineComponent, computed, watchEffect } from 'vue';
 
-import { Item, ItemDoc, state} from '@/store'
+import { Item, useStateReactive } from '@/store'
 
 /*
 firestore-simple based
 */
 export default defineComponent({
   name: 'ItemTable',
-  props: {
-    msg: String,
-  },
-  async setup() {
+  setup() {
 
-    const items = watchEffect(() => state.itemdoc)
+    const { items, ItemDoc } = useStateReactive()
 
     const newItem = ""
 
+    const check = (itemname: string) => {
+      console.log("add")
+    }
+
     return {
       newItem,
-      items
+      items,
+      check
     }
   }
 });

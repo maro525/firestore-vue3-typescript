@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p>todo list</p>
     <ul>
       <li v-for="d in doc" :key="d.id">{{ d.data.content }}</li>
     </ul>
@@ -19,9 +20,6 @@ provider based
 */
 export default defineComponent({
   name: 'TodoTable',
-  props: {
-    msg: String,
-  },
   setup() {
     // const { doc, create }= useDoc(TodoDocKey)
     const doc: any[] = []
