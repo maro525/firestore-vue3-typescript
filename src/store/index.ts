@@ -38,13 +38,23 @@ export function useStateReactive() {
   // item doc sync
   const ItemDoc = firestoreSimple.collection<Item>({ path: `items` })
   ItemDoc.onSnapshot((QuerySnapshot) => {
-    state.items = QuerySnapshot.docs.map(v => v.data() as Item)
+    state.items = QuerySnapshot.docs.map(v => {
+      return {
+        ...v.data(),
+        id: v.id
+      } as Item
+    })
   })
 
   // todo doc sync
   const TodoDoc = firestoreSimple.collection<Todo>({ path: `todos` })
   TodoDoc.onSnapshot((QuerySnapshot) => {
-    state.todos = QuerySnapshot.docs.map(v => v.data() as Todo)
+    state.todos = QuerySnapshot.docs.map(v => {
+      return {
+        ...v.data(),
+        id: v.id
+      } as Todo
+    })
   })
 
   return {

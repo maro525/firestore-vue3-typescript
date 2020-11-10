@@ -31,7 +31,6 @@ export default defineComponent({
     }
 
     const deleteItem = async (id: string) => {
-      console.log(id)
       const deleteid = await ItemDoc.delete(id)
       console.log(deleteid)
     }
