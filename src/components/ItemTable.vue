@@ -1,50 +1,103 @@
 <template>
-  <div>
-    <ul>
-      <li v-for="item in items" :key="item.id">{{ item.name }}<button @click="deleteItem(item.id)">delete</button></li>
-    </ul>
-    <input type="text" v-model="newItem" />
-    <button @click="addItem(newItem)">add</button>
+  <div class="items">
+    <div class="row" id="tableHeader">
+      <span class="name">name</span>
+      <span class="description">description</span>
+      <span class="favorite">favorite</span>
+      <span class="deleteBtn">delete</span>
+    </div>
+    <div v-for="item in items" class="row" :key="item.id">
+      <span class="name">{{ item.name }}</span>
+      <span class="description">{{ item.description }}</span>
+      <span class="favorite">{{ item.favorite }}</span>
+      <span class="deleteBtn"><button @click="deleteItem(item.id)">delete</button></span>
+    </div>
+    <div class="row">
+      <span class="name"><input type="text" v-model="newItemName" /></span>
+      <span class="description"><input type="text" v-model="newItemDescription" /></span>
+      <span class="favorite"><input type="checkbox" v-model="newItemFavorite" /></span>
+      <span class="deleteBtn"><button @click="addItem()">add</button></span>
+    </div>
   </div>
 </template>
 
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive, toRefs } from "vue";
 
-import { useStateReactive } from '@/store'
+import { useStateReactive } from "@/store";
 
 /*
 firestore-simple based
 */
 export default defineComponent({
-  name: 'ItemTable',
+  name: "ItemTable",
   setup() {
+    const { items, ItemDoc } = useStateReactive();
 
-    const { items, ItemDoc } = useStateReactive()
+    const state = reactive({
+      newItemName: "",
+      newItemDescription: "",
+      newItemFavorite: false
+    })
 
-    const newItem = ""
-
-    const addItem = async (itemname: string) => {
-      const newid = await ItemDoc.add({name: itemname, favorite: false, description: ''})
-      console.log(newid)
-    }
+    const addItem = async () => {
+      const newid = await ItemDoc.add({
+        name: state.newItemName,
+        favorite: state.newItemFavorite,
+        description: state.newItemDescription 
+      });
+      console.log(newid);
+      state.newItemName = ""
+      state.newItemFavorite = false;
+      state.newItemDescription = "";
+    };
 
     const deleteItem = async (id: string) => {
-      const deleteid = await ItemDoc.delete(id)
-      console.log(deleteid)
-    }
+      const deleteid = await ItemDoc.delete(id);
+      console.log(deleteid);
+    };
 
     return {
-      newItem,
+      ...toRefs(state),
       items,
       addItem,
-      deleteItem
-    }
-  }
+      deleteItem,
+    };
+  },
 });
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.items {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  #tableHeader {
+    background-color: #b2b1be;
+    font-weight: 600;
+  }
+
+  .row {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #b1b0b9;
+
+    .name {
+      width: 25%;
+    }
+
+    .description {
+      width: 45%;
+    }
+
+    .favorite { 
+      width: 15%;
+    }
+
+    .deleteBtn {
+      width: 15%;
+    }
+  }
+}
 </style>
