@@ -28,33 +28,32 @@ interface ReactiveState{
 /*
 main store function
 */
-export function useStateReactive() {
   
-  const state = reactive<ReactiveState>({
-    items: [],
-    todos: []
-  })
+const state = reactive<ReactiveState>({
+  items: [],
+  todos: []
+})
 
   // item doc sync
-  const ItemDoc = firestoreSimple.collection<Item>({ path: `items` })
-  ItemDoc.onSnapshot((QuerySnapshot) => {
-    state.items = QuerySnapshot.docs.map(v => v.data() as Item)
+export const ItemDoc = firestoreSimple.collection<Item>({ path: `items` })
+ItemDoc.onSnapshot((QuerySnapshot) => {
+  state.items = QuerySnapshot.docs.map(v => {
+    return {
+      ...v.data(),
+      id: v.id
+   } as Item;
   })
+  console.log(state.items.length)
+});
 
-  // todo doc sync
-  const TodoDoc = firestoreSimple.collection<Todo>({ path: `todos` })
-  TodoDoc.onSnapshot((QuerySnapshot) => {
-    state.todos = QuerySnapshot.docs.map(v => v.data() as Todo)
-  })
+// todo doc sync
+export const TodoDoc = firestoreSimple.collection<Todo>({ path: `todos` })
+TodoDoc.onSnapshot((QuerySnapshot) => {
+  state.todos = QuerySnapshot.docs.map(v => v.data() as Todo)
+})
 
+export function useFirestore() {
   return {
     ...toRefs(state),
-    ItemDoc,
-    TodoDoc
   }
 }
-
-
-
-
-export const TodoDoc = firestoreSimple.collection<Todo>({ path: `todos` })

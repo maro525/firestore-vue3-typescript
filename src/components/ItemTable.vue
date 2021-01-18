@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import { useStateReactive } from '@/store'
+import { useFirestore, ItemDoc  } from '@/store'
 
 /*
 firestore-simple based
@@ -21,7 +21,7 @@ export default defineComponent({
   name: 'ItemTable',
   setup() {
 
-    const { items, ItemDoc } = useStateReactive()
+    const { items } = useFirestore()
 
     const newItem = ""
 
