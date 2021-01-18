@@ -35,6 +35,7 @@ const state = reactive<ReactiveState>({
 })
 
   // item doc sync
+<<<<<<< HEAD
 export const ItemDoc = firestoreSimple.collection<Item>({ path: `items` })
 ItemDoc.onSnapshot((QuerySnapshot) => {
   state.items = QuerySnapshot.docs.map(v => {
@@ -42,15 +43,38 @@ ItemDoc.onSnapshot((QuerySnapshot) => {
       ...v.data(),
       id: v.id
    } as Item;
+=======
+  const ItemDoc = firestoreSimple.collection<Item>({ path: `items` })
+  ItemDoc.onSnapshot((QuerySnapshot) => {
+    state.items = QuerySnapshot.docs.map(v => {
+      return {
+        ...v.data(),
+        id: v.id
+      } as Item
+    })
+>>>>>>> 4df4e5959510cee5e4f361fc1b659b3d9d8213c4
   })
   console.log(state.items.length)
 });
 
+<<<<<<< HEAD
 // todo doc sync
 export const TodoDoc = firestoreSimple.collection<Todo>({ path: `todos` })
 TodoDoc.onSnapshot((QuerySnapshot) => {
   state.todos = QuerySnapshot.docs.map(v => v.data() as Todo)
 })
+=======
+  // todo doc sync
+  const TodoDoc = firestoreSimple.collection<Todo>({ path: `todos` })
+  TodoDoc.onSnapshot((QuerySnapshot) => {
+    state.todos = QuerySnapshot.docs.map(v => {
+      return {
+        ...v.data(),
+        id: v.id
+      } as Todo
+    })
+  })
+>>>>>>> 4df4e5959510cee5e4f361fc1b659b3d9d8213c4
 
 export function useFirestore() {
   return {
