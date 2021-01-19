@@ -8,6 +8,8 @@ declare module "vuex" {
   function useStore<T = any>(key?: string): T
 }
 
-export interface MutationTree<S> {
-  [key: string]: Mutation<S>;
+declare module '*.svg' {
+  import Vue, {VueConstructor} from 'vue';
+  const content: vueConstructor<Vue>
+  export default content;
 }

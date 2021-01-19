@@ -1,4 +1,5 @@
 <template>
+  <SearchLogo class="logo" />
   <div class="items">
     <div class="row" id="tableHeader">
       <span class="name">name</span>
@@ -25,29 +26,26 @@
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
 
-<<<<<<< HEAD
 import { useFirestore, ItemDoc  } from '@/store'
-=======
-import { useStateReactive } from "@/store";
->>>>>>> 4df4e5959510cee5e4f361fc1b659b3d9d8213c4
+
+import SearchLogo from '@/assets/search.svg'
 
 /*
 firestore-simple based
 */
 export default defineComponent({
   name: "ItemTable",
+  components: {
+    SearchLogo
+  },
   setup() {
-    const { items, ItemDoc } = useStateReactive();
 
-<<<<<<< HEAD
     const { items } = useFirestore()
-=======
     const state = reactive({
       newItemName: "",
       newItemDescription: "",
       newItemFavorite: false
     })
->>>>>>> 4df4e5959510cee5e4f361fc1b659b3d9d8213c4
 
     const addItem = async () => {
       const newid = await ItemDoc.add({
@@ -107,5 +105,9 @@ export default defineComponent({
       width: 15%;
     }
   }
+}
+.logo {
+  width: 27px;
+  height: 27px;
 }
 </style>
